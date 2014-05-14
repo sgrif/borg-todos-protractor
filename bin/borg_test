@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+'use strict';
+
+process.env.NODE_ENV = process.env.NODE_ENV || 'test';
+
+var argv = require('minimist')(process.argv.slice(2));
+var redirections = JSON.parse(argv.redirect)
+
+require('child_process').execFile(
+  'node_modules/.bin/protractor',
+  ['protractor.conf.js', '--baseUrl=' + redirections.base],
+  function (error, stdout, stderr) {
+    process.stdout.write(stdout);
+    process.stderr.write(stderr);
+    process.exit(error.code);
+  });
